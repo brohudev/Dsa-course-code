@@ -28,7 +28,7 @@ done
 # For test case 1
 # input 1.txt and output 1.out
 for casenum in `seq 1 1 3`; do
-	./${cmd} "input=input${casenum}.txt;output=output${casenum}.txt" 1>${casenum}.stdcout 2>${casenum}.stderr
+    ./${cmd} "input=input${casenum}.txt;output=output${casenum}.txt" 1>${casenum}.stdcout 2>${casenum}.stderr
 # compare 1.out with 1.ans, output the difference to 1.diff
 	diff -iEBwu ans${casenum}.txt output${casenum}.txt > ${casenum}.diff
 # if diff returns nothing, it means you pass the test case (Your ourput file 1.out is correct)

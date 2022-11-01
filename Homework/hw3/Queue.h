@@ -13,7 +13,7 @@ struct Pair {
 };
 
 struct qNode {
-  Pair data;
+  Pair matrix;
   qNode *next;
 };
 
@@ -38,7 +38,7 @@ bool Queue::isEmpty() { return (front == nullptr); }
 
 void Queue::enqueue(Pair p) {
   qNode *temp = new qNode();
-  temp->data = p;
+  temp->matrix = p;
   temp->next = nullptr;
   if (isEmpty()) {
     front = temp;
@@ -50,7 +50,7 @@ void Queue::enqueue(Pair p) {
 }
 
 Pair Queue::dequeue() {
-  Pair temp = front->data;
+  Pair temp = front->matrix;
   qNode *del = front;
   front = front->next;
   delete del;

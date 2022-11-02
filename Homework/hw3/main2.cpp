@@ -27,7 +27,7 @@ void moveUp(vector<vector<char>> &matrix, size_t row, size_t col)
     {
         for (int i = 0; i < row; i++)
         {
-            if (matrix[i][j] != 'O' && matrix[i][j] == 'X')
+            if (matrix[i][j] != 'O' && matrix[i][j] != 'X')
             {
                 if (!s.isEmpty() && s.peek() == 'B')
                 {
@@ -37,7 +37,7 @@ void moveUp(vector<vector<char>> &matrix, size_t row, size_t col)
                 else
                     s.push(matrix[i][j]);
             }
-            else if (matrix[i][j] != 'X')
+            else if (matrix[i][j] == 'X')
             {
                 while (s.getSize() < counter)
                     s.push('O');
@@ -61,12 +61,11 @@ void moveRight(vector<vector<char>> &matrix, size_t row, size_t col) // Need to 
     Stack s;
     int counter = 0;
     char temp;
-
-    for (int j = 0; j < col; j++)
+    for (int i = 0; i < row; i++)
     {
-        for (int i = 0; i < row; i++)
+        for (int j = col-1 ; j >=0; j--)
         {
-            if (matrix[i][j] != 'O' && matrix[i][j] == 'X')
+            if (matrix[i][j] != 'O' && matrix[i][j] != 'X')
             {
                 if (!s.isEmpty() && s.peek() == 'B')
                 {
@@ -76,7 +75,7 @@ void moveRight(vector<vector<char>> &matrix, size_t row, size_t col) // Need to 
                 else
                     s.push(matrix[i][j]);
             }
-            else if (matrix[i][j] != 'X')
+            else if (matrix[i][j] == 'X')
             {
                 while (s.getSize() < counter)
                     s.push('O');
@@ -88,7 +87,7 @@ void moveRight(vector<vector<char>> &matrix, size_t row, size_t col) // Need to 
         while (s.getSize() < counter)
             s.push('O');
 
-        for (int i = row - 1; i >= 0; i--)
+        for (int j = 0; j < col; j++)
             matrix[i][j] = s.pop();
 
         counter = 0;
@@ -103,9 +102,9 @@ void moveDown(vector<vector<char>> &matrix, size_t row, size_t col) // Need to i
 
     for (int j = 0; j < col; j++)
     {
-        for (int i = 0; i < row; i++)
+        for (int i = row-1; i >=0 ; i--)
         {
-            if (matrix[i][j] != 'O' && matrix[i][j] == 'X')
+            if (matrix[i][j] != 'O' && matrix[i][j] != 'X')
             {
                 if (!s.isEmpty() && s.peek() == 'B')
                 {
@@ -115,7 +114,7 @@ void moveDown(vector<vector<char>> &matrix, size_t row, size_t col) // Need to i
                 else
                     s.push(matrix[i][j]);
             }
-            else if (matrix[i][j] != 'X')
+            else if (matrix[i][j] == 'X')
             {
                 while (s.getSize() < counter)
                     s.push('O');
@@ -127,7 +126,7 @@ void moveDown(vector<vector<char>> &matrix, size_t row, size_t col) // Need to i
         while (s.getSize() < counter)
             s.push('O');
 
-        for (int i = row - 1; i >= 0; i--)
+        for (int i = 0; i < row; i++)
             matrix[i][j] = s.pop();
 
         counter = 0;
@@ -139,12 +138,11 @@ void moveLeft(vector<vector<char>> &matrix, size_t row, size_t col) // Need to i
     Stack s;
     int counter = 0;
     char temp;
-
-    for (int j = 0; j < col; j++)
+    for (int i = 0; i < row; i++)
     {
-        for (int i = 0; i < row; i++)
+        for (int j = 0; j < col; j++)
         {
-            if (matrix[i][j] != 'O' && matrix[i][j] == 'X')
+            if (matrix[i][j] != 'O' && matrix[i][j] != 'X')
             {
                 if (!s.isEmpty() && s.peek() == 'B')
                 {
@@ -154,7 +152,7 @@ void moveLeft(vector<vector<char>> &matrix, size_t row, size_t col) // Need to i
                 else
                     s.push(matrix[i][j]);
             }
-            else if (matrix[i][j] != 'X')
+            else if (matrix[i][j] == 'X')
             {
                 while (s.getSize() < counter)
                     s.push('O');
@@ -166,7 +164,7 @@ void moveLeft(vector<vector<char>> &matrix, size_t row, size_t col) // Need to i
         while (s.getSize() < counter)
             s.push('O');
 
-        for (int i = row - 1; i >= 0; i--)
+        for (int j = col - 1; j >= 0; j--)
             matrix[i][j] = s.pop();
 
         counter = 0;
@@ -218,14 +216,13 @@ void addPath(Queue &q, Pair p, int move, size_t row, size_t col)
         break;
     }
 }
-
 int main(int argc, char *argv[])
 {
     ArgumentManager am(argc, argv);
     ifstream input(am.get("input"));
     ofstream output(am.get("output"));
 
-    // ifstream input("input1.txt");
+    // ifstream input("input3.txt");
     // ofstream output("output1.txt");
 
     size_t row;
@@ -247,26 +244,21 @@ int main(int argc, char *argv[])
         }
         matrix.push_back(temp);
     }
-
     Pair temp;
     temp.matrix = matrix;
     temp.moves = "";
-
     Queue q;
     q.enqueue(temp);
-
-    while (!q.isEmpty())
-    {
+    while (!q.isEmpty()){
         temp = q.dequeue();
-        if (isSolved(temp.matrix, row, col))
-        {
+        if (isSolved(temp.matrix, row, col)){
             if (temp.moves == "")
-                cout << 0;
+                output << 0;
             else
-                cout << temp.moves;
+                output << temp.moves;
+            break;
         }
-        else
-        {
+        else{
             addPath(q, temp, 1, row, col);
             addPath(q, temp, 2, row, col);
             addPath(q, temp, 3, row, col);

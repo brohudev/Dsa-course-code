@@ -2,7 +2,7 @@
 #include <string>
 #include <algorithm>
 #include <fstream>
-
+#include <vector>
 using namespace std;
 //! create a dynamic array of pointers to nodes.
 //! randomely generate a number
@@ -13,6 +13,8 @@ using namespace std;
 //linear hashing quadratic probing. 
 //open chaining is on thursday for the first 10 mins. ?
 int main(int argc, char* argv[]){
+     vector<vector<int>> array;
+     int **array = new int*[10];
      
      return 0;
 }

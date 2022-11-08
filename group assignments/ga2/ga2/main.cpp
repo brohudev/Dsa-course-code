@@ -5,7 +5,7 @@
 #include "ArgumentManager.h"
 #include <stack>
 using namespace std;
-int prec(char c) {
+int order(char c) {
   if (c == '/' || c == '*')
     return 2;
   else if (c == '+' || c == '-')
@@ -57,50 +57,33 @@ bool isvalidparenthesis(string &inStr){
      return false; //default if the program screws up
 }
 //!somehow its broken. it worked before.
-string infixtopostfix(string input){
-     stack<string> s; 
-     string result = "" ; //will store the final postfix result.
-     string term="";
-     //*process on it as a string.
-     if(!input.empty() && (input.find(" ") == string::npos)){//input is a single number 
-          return input;
-     }
-     while (!input.empty()){//while input is not empty
-          term = input.substr(0,input.find(" ")); //store the term;
-          if (isop(term) == 1){//current term is operand
-               result += term +",";// append the operand onto the result string.
-          }
-          
-          else if (term == "("){//current term is opening brace
-               s.push("(");
-          }
-          else if (term == ")") {//current term is closing brace. pop till you hit "("
-               while (s.top() != "(") {
-                    result += s.top()+",";
-                    s.pop();
-               }
-               s.pop();//discard the opening brace
-          }
-          
-          else if (isop(term) == 2){//term is an operator
-               while (!s.empty() && (prec(s.top()[0]) >= prec(term[0])) && s.top()[0] != ')'){ 
-               // found s.top to be higher precedence than current node, and current is not open bracket
-                    result += s.top()+",";//add the operator to result
-                    s.pop(); //pop the top of the stack
-               }
-               s.push(term); // current term is higher precedence than s.top, push it.
-          }
-          if(input.find(" ") == string::npos)
-          break;
-          input = input.substr(input.find(" ")+1);
-     }
-
-     //empty the rest of the stack 
-     while (!s.empty()){ // empty out the remaining operators in the stack
-          result += s.top(); //append the term on top
-          s.pop(); //pop the top term
-     }
-     return result;
+string infixtopostfix(string infix){
+     stack<char> stack;
+  string postfixed = "";
+  for (int i = 0; i < infix.length(); i++) {
+    if (infix[i] == ')' || infix[i] == ']' || infix[i] == '}') {
+      while (stack.top() != '(') {
+        postfixed += stack.top();
+        stack.pop();
+      }
+      stack.pop();
+    } else if (infix[i] == '(' || infix[i] == '[' || infix[i] == '{') {
+      stack.push('(');
+    } else if (isalnum(infix[i])) {
+      postfixed += infix[i];
+    } else {
+      while (!stack.empty() && order(stack.top()) >= order(infix[i])) {
+        postfixed += stack.top();
+        stack.pop();
+      }
+      stack.push(infix[i]);
+    }
+  }
+  while (!stack.empty()) {
+    postfixed += stack.top();
+    stack.pop();
+  }
+  return postfixed;
 }
 //* btw, this method assumes seperators are commas, you may need to change it for using spaces.
 double evalpostfix(string input){

@@ -89,11 +89,11 @@ class avlTree {
         int bFactor(node* cu) { return (height(cu->left) - height(cu->right)); }
         void print(ofstream &out, node* parent, int c){
             if (parent != nullptr) {
-                if(c==1){
+                if(c==2){
                     out << parent->data <<endl;
                 }
                 print(out,parent->left,c);
-                if(c==2){
+                if(c==1){
                     out << parent->data<<endl;
                 }
                 print(out,parent->right,c);
@@ -177,10 +177,10 @@ prionode* pqueue::pop(){
 
 int main(int argc, char* argv[]){
     ArgumentManager am(argc,argv);
-    //ifstream input(am.get("input"));
-    //ofstream out(am.get("output"));
-    ifstream input("input3.txt");
-    ofstream out("output1.txt");
+    ifstream input(am.get("input"));
+    ofstream out(am.get("output"));
+    // ifstream input("input3.txt");
+    // ofstream out("output1.txt");
     string msg, arg, arg2, cmd, temp, in, order; //need them strings.
     int prio;
     avlTree tree; pqueue pq; queue<string> q; //bsts and q's
@@ -245,7 +245,7 @@ int main(int argc, char* argv[]){
         }
     }
     switch(order[1]){
-        case 'n': // * if its inorder - 1
+        case 'n': // * if its inorder - 2
             tree.print(out,tree.getRoot(), 1); //print recursive cases.
             break;
         case 'r': // * if its preorder - 2

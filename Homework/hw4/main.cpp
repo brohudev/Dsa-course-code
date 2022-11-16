@@ -94,7 +94,7 @@ class avlTree {
                 }
                 print(out,parent->left,c);
                 if(c==1){
-                    out << parent->data<<endl;
+                    out << parent->data <<endl;
                 }
                 print(out,parent->right,c);
                 if(c==3){
